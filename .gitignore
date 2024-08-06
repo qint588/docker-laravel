@@ -1,0 +1,5 @@
+docker/data/*
+docker/mysql/*
+docker/redis/*
+source/*
+.env
