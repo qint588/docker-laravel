@@ -7,7 +7,7 @@ git clone git@github.com:qint588/docker-laravel.git
 
 ### 2. Clone project
 ```
-git clone {remote url} -b {branch} source
+cd source && git clone {remote url} -b {branch} .
 ```
 
 ### 3. Run project
