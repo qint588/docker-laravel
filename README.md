@@ -1,5 +1,4 @@
 # Setup
-----
 
 ##### 1. Clone template
 ```
