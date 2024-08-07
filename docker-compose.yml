@@ -1,8 +1,9 @@
 version: '3.5'
 name: "base"
+
 services:
-  base_mysql:
-    container_name: base_mysql
+  mysql:
+    container_name: ${DOCKER_APP_NAME}-mysql
     image: arm64v8/mysql:8.3
     environment:
       MYSQL_ROOT_USER: ${MYSQL_ROOT_USER}
@@ -11,23 +12,22 @@ services:
     volumes:
       - ./docker/mysql:/var/lib/mysql
     ports:
-      - "${MYSQL_PORT}:3306"
+      - "${DOCKER_MYSQL_PORT}:3306"
     networks:
-      - base_network
+      - app-network
     restart: unless-stopped
 
-  base_php:
+  app:
     build:
       context: '.'
       dockerfile: ./docker/php/Dockerfile
-    image: base/php:8.3
-    container_name: base_php
+    container_name: ${DOCKER_APP_NAME}-app
     ports:
-      - ${PHP_PORT}:80
+      - ${DOCKER_PHP_PORT}:80
     environment:
       - APACHE_RUN_USER=#1000
       - APACHE_RUN_GROUP=#1000
-      - DB_HOST=base_mysql
+      - DB_HOST=mysql
       - DB_PORT=3306
       - DB_DATABASE=${MYSQL_DATABASE}
       - DB_USERNAME=${MYSQL_ROOT_USER}
@@ -36,27 +36,24 @@ services:
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
       - ./source:/var/www/html
     networks:
-      - base_network
+      - app-network
     depends_on:
-      - base_mysql
-      - base_redis
+      - mysql
+      - redis
     restart: unless-stopped
 
-  base_redis:
+  redis:
     image: arm64v8/redis:latest
-    container_name: base_redis
+    container_name: ${DOCKER_APP_NAME}-redis
     ports:
-      - "${REDIS_PORT}:6379"
+      - "${DOCKER_REDIS_PORT}:6379"
     volumes:
       - './docker/redis:/data'
     networks:
-      - base_network
+      - app-network
 
+# Networks
 networks:
-  base_network:
-    name: base_network
+  app-network:
     driver: bridge
-
-volumes:
-  base_volume:
-    name: base_volume
+    external: false

@@ -1,7 +1,7 @@
 up:
 	docker compose up -d
 setup:
-	sh _run.sh
+	sh bin/server_setup.sh
 build:
 	docker compose build
 init:
