@@ -34,7 +34,7 @@ services:
       - DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
-      - ./source:/var/www/html
+      - ./web:/var/www/html
     networks:
       - app-network
     depends_on:
