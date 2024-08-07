@@ -1,5 +1,4 @@
-version: '3.5'
-name: "base"
+version: '3.8'
 
 services:
   mysql:
@@ -22,6 +21,7 @@ services:
       context: '.'
       dockerfile: ./docker/php/Dockerfile
     container_name: ${DOCKER_APP_NAME}-app
+    image: ${DOCKER_APP_NAME}-app
     ports:
       - ${DOCKER_PHP_PORT}:80
     environment:
